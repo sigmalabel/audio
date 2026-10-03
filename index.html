@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Convert audio formats, sample rates, and bit depths directly in your browser." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script src="/coi-serviceworker.js"></script>
+    <title>Sigma Audio</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="site-header">
+        <a class="brand" href="#top" aria-label="Sigma Audio home">
+          <span class="brand-sigma" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 4H5l7 8-7 8h14"/>
+            </svg>
+          </span>
+          <span>Sigma Audio</span>
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="#converter">Converter</a>
+          <a href="#how-it-works">How it works</a>
+        </nav>
+        <a class="header-cta" href="#converter">Open tool</a>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="orbit orbit-one"></div>
+          <div class="orbit orbit-two"></div>
+          <div class="glow glow-one"></div>
+          <div class="glow glow-two"></div>
+
+          <div class="hero-copy">
+            <div class="brand-badge">
+              <span class="badge-dot"></span>
+              <span>The Best Audio Engine for Underground & Major Artists</span>
+            </div>
+            <h1 id="hero-title">You shape <span class="mint-accent">the</span> sound.<br><span class="sigma-codebox"><span class="sigma-gradient-text">Sigma Audio</span></span> does the rest.</h1>
+            <p class="hero-description">We help artists shape, tune, and convert Phonk, Brazilian Funk, Hardstyle, Hardtekk, and electronic music with zero quality loss. Processed 100% locally in your browser.</p>
+            <div class="hero-actions">
+              <a class="primary-button" href="#converter">Convert an audio file</a>
+              <a class="secondary-button" href="#how-it-works">See how it works</a>
+            </div>
+            <div class="genre-tags" aria-label="Supported genres">
+              <span>Phonk</span>
+              <span>Brazilian Funk</span>
+              <span>Hardstyle</span>
+              <span>Hardtekk</span>
+              <span>Electronic</span>
+              <span>Lossless WAV</span>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-hidden="true">
+            <div class="wave-stage">
+              <div class="stage-topline"><span>Untitled audio</span><span>01:42</span></div>
+              <div class="hero-wave">
+                <i style="--h:28%"></i><i style="--h:56%"></i><i style="--h:38%"></i><i style="--h:82%"></i><i style="--h:44%"></i><i style="--h:92%"></i><i style="--h:54%"></i><i style="--h:72%"></i><i style="--h:36%"></i><i style="--h:64%"></i><i style="--h:48%"></i><i style="--h:84%"></i><i style="--h:40%"></i><i style="--h:68%"></i><i style="--h:30%"></i><i style="--h:60%"></i><i style="--h:46%"></i><i style="--h:78%"></i><i style="--h:34%"></i><i style="--h:52%"></i><i style="--h:26%"></i>
+              </div>
+              <div class="stage-track"><span></span></div>
+              <div class="stage-footer"><span>LOSSLESS ENGINE</span><strong>100%</strong></div>
+            </div>
+            <div class="float-card card-format"><small>FORMAT</small><strong>WAV</strong><span>Lossless audio</span></div>
+            <div class="float-card card-rate"><small>SAMPLE RATE</small><strong>48.0</strong><span>kHz</span></div>
+            <div class="float-card card-depth"><small>BIT DEPTH</small><strong>16</strong><span>bit PCM</span></div>
+          </div>
+        </section>
+
+        <section class="converter-section" id="converter" aria-labelledby="converter-title">
+          <div class="section-heading">
+            <p class="eyebrow"><span></span> Tool 01</p>
+            <h2 id="converter-title">Convert without compromise.</h2>
+            <p>Analyze, tune, shape, convert, and download—without leaving your browser.</p>
+          </div>
+
+          <div class="converter-shell">
+            <div class="tool-titlebar">
+              <div>
+                <span class="status-dot"></span>
+                <strong>Audio converter</strong>
+              </div>
+              <span id="engineStatus">Engine loads when needed</span>
+            </div>
+
+            <div class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Choose or drop an audio file">
+              <input id="fileInput" type="file" accept="audio/*,.wav,.mp3,.ogg,.oga,.flac,.m4a,.aac,.aiff,.aif,.opus,.wma" hidden />
+              <div class="upload-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4"/></svg>
+              </div>
+              <div class="upload-copy">
+                <strong id="uploadTitle">Drop your audio here</strong>
+                <span id="uploadSubtitle">or click to browse · WAV, MP3, OGG, FLAC, M4A and more</span>
+              </div>
+              <button class="choose-button" type="button" id="chooseButton">Choose file</button>
+            </div>
+
+            <div class="editor-workspace is-hidden" id="editorWorkspace">
+              <div class="workspace-main">
+              <div class="file-panel is-hidden" id="filePanel" aria-live="polite">
+              <div class="file-main">
+                <button class="play-button" id="playButton" type="button" aria-label="Play preview">
+                  <svg class="play-icon" viewBox="0 0 24 24"><path d="m9 7 8 5-8 5V7Z"/></svg>
+                  <svg class="pause-icon" viewBox="0 0 24 24"><path d="M9 7v10M15 7v10"/></svg>
+                </button>
+                <div class="file-details">
+                  <strong id="fileName">audio.wav</strong>
+                  <span id="fileMeta">—</span>
+                </div>
+                <button class="remove-button" id="removeButton" type="button" aria-label="Remove selected file">
+                  <svg viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg>
+                </button>
+              </div>
+
+              <div class="waveform-toolbar" aria-label="Audio waveform editing tools">
+                <div class="wave-tools-group" role="tablist" aria-label="Waveform tools">
+                  <button type="button" class="wave-tool-btn is-active" data-tool="cursor" role="tab" aria-selected="true" title="Cursor: Click anywhere on timeline to seek">
+                    <svg viewBox="0 0 24 24"><path d="M4 4l7 17 2.5-6.5L20 12z"/></svg>
+                    <span>Cursor</span>
+                  </button>
+                  <button type="button" class="wave-tool-btn" data-tool="trim" role="tab" aria-selected="false" title="Cut / Trim: Set start and end points to trim audio">
+                    <svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+                    <span>Cut (Trim)</span>
+                  </button>
+                  <button type="button" class="wave-tool-btn" data-tool="fadein" role="tab" aria-selected="false" title="Fade In: Automate fade-in length on the waveform">
+                    <svg viewBox="0 0 24 24"><path d="M3 20h18M3 20c8 0 10-14 18-14"/></svg>
+                    <span>Fade In</span>
+                  </button>
+                  <button type="button" class="wave-tool-btn" data-tool="fadeout" role="tab" aria-selected="false" title="Fade Out: Automate fade-out length on the waveform">
+                    <svg viewBox="0 0 24 24"><path d="M3 20h18M3 6c8 0 10 14 18 14"/></svg>
+                    <span>Fade Out</span>
+                  </button>
+                </div>
+                <div class="wave-tool-context" id="waveToolContext">
+                  <div class="tool-context-pane" data-pane="cursor">
+                    <span class="tool-hint">Click waveform to seek</span>
+                  </div>
+                  <div class="tool-context-pane is-hidden" data-pane="trim">
+                    <span class="trim-indicator">Selected: <strong id="trimRangeLabel">0:00 – 0:00</strong> (<span id="trimDurationLabel">0:00</span>)</span>
+                    <button type="button" class="tool-action-btn" id="resetTrimBtn">Reset trim</button>
+                  </div>
+                  <div class="tool-context-pane is-hidden" data-pane="fadein">
+                    <label class="tool-toggle-label">
+                      <input type="checkbox" id="fadeInToggle" />
+                      <span class="toggle-slider"></span>
+                      <span>Fade In</span>
+                    </label>
+                    <span class="fade-pill" id="fadeInValueLabel">2.0s</span>
+                    <small class="tool-hint">Drag handle on waveform</small>
+                  </div>
+                  <div class="tool-context-pane is-hidden" data-pane="fadeout">
+                    <label class="tool-toggle-label">
+                      <input type="checkbox" id="fadeOutToggle" />
+                      <span class="toggle-slider"></span>
+                      <span>Fade Out</span>
+                    </label>
+                    <span class="fade-pill" id="fadeOutValueLabel">2.0s</span>
+                    <small class="tool-hint">Drag handle on waveform</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="waveform-wrap">
+                <canvas id="waveform" height="112" tabindex="0" role="slider" aria-label="Audio preview position. Click or use arrow keys to seek." aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></canvas>
+              </div>
+              <div class="preview-timeline">
+                <span id="timeCurrent">0:00</span>
+                <span id="timelineStatus">Click anywhere on the waveform to seek</span>
+                <span id="timeTotal">0:00</span>
+              </div>
+
+              <div class="analysis-heading">
+                <div><span>Source analysis</span><strong>Detected track details</strong></div>
+                <small>Calculated locally from your audio</small>
+              </div>
+              <div class="analysis-strip" aria-label="Detected track details">
+                <div class="analysis-card"><span>BPM</span><strong id="analysisBpm">—</strong><small id="bpmConfidence">Analyzing</small></div>
+                <div class="analysis-card"><span>Key</span><strong id="analysisKey">—</strong><small>Detected root</small></div>
+                <div class="analysis-card"><span>Scale</span><strong id="analysisScale">—</strong><small>Major / minor</small></div>
+                <div class="analysis-card"><span>Sample rate</span><strong id="analysisRate">—</strong><small>Source kHz</small></div>
+                <div class="analysis-card"><span>Bit depth</span><strong id="analysisDepth">—</strong><small>Source audio</small></div>
+              </div>
+            </div>
+              </div>
+
+              <aside class="editor-sidebar" aria-label="Audio editing controls">
+                <div class="sidebar-heading">
+                  <div><span>Editing controls</span><strong>Shape your output</strong></div>
+                  <small>Preview updates live</small>
+                </div>
+
+            <form class="settings-grid" id="settingsForm">
+              <label>
+                <span>Output format</span>
+                <div class="select-wrap">
+                  <select id="formatSelect">
+                    <option value="wav">WAV</option>
+                    <option value="mp3">MP3</option>
+                    <option value="ogg">OGG Vorbis</option>
+                    <option value="flac">FLAC</option>
+                    <option value="m4a">M4A (AAC)</option>
+                    <option value="aac">AAC</option>
+                    <option value="aiff">AIFF</option>
+                  </select>
+                </div>
+              </label>
+              <label>
+                <span>Sample rate</span>
+                <div class="select-wrap">
+                  <select id="rateSelect">
+                    <option value="original" selected>Keep original</option>
+                    <option value="44100">44.1 kHz</option>
+                    <option value="48000">48 kHz</option>
+                    <option value="88200">88.2 kHz</option>
+                    <option value="96000">96 kHz</option>
+                    <option value="192000">192 kHz</option>
+                  </select>
+                </div>
+              </label>
+              <label id="depthField">
+                <span>Bit depth</span>
+                <div class="select-wrap">
+                  <select id="depthSelect">
+                    <option value="original" selected>Keep original</option>
+                    <option value="24">24 bit</option>
+                    <option value="16">16 bit</option>
+                    <option value="32">32 bit float</option>
+                  </select>
+                </div>
+              </label>
+              <label id="bitrateField" class="is-hidden">
+                <span>Bitrate</span>
+                <div class="select-wrap">
+                  <select id="bitrateSelect">
+                    <option value="320k" selected>320 kbps (Maximum quality)</option>
+                    <option value="256k">256 kbps</option>
+                    <option value="192k">192 kbps</option>
+                  </select>
+                </div>
+              </label>
+              <label>
+                <span>Channels</span>
+                <div class="select-wrap">
+                  <select id="channelSelect">
+                    <option value="original" selected>Keep original</option>
+                    <option value="1">Mono</option>
+                    <option value="2">Stereo</option>
+                  </select>
+                </div>
+              </label>
+              <label class="name-field">
+                <span>Output filename</span>
+                <div class="filename-input">
+                  <input id="outputName" type="text" value="converted-audio" maxlength="120" spellcheck="false" />
+                  <b id="extensionLabel">.wav</b>
+                </div>
+              </label>
+            </form>
+
+            <div class="processing-panel is-hidden" id="processingPanel">
+              <section class="motion-card" aria-labelledby="motionTitle">
+                <div class="panel-heading">
+                  <div><span>Time & pitch</span><h3 id="motionTitle">Speed and key</h3></div>
+                  <button class="mini-button" id="resetMotion" type="button">Reset</button>
+                </div>
+
+                <div class="control-block">
+                  <div class="control-label"><label for="speedRange">Speed</label><output id="speedValue">1.00×</output></div>
+                  <input class="accent-range" id="speedRange" type="range" min="0.5" max="1.5" value="1" step="0.01" />
+                  <div class="range-ends"><span>Slower + lower</span><span id="naturalPitchValue">Natural pitch: 0.0 st</span><span>Faster + higher</span></div>
+                  <div class="quick-values" aria-label="Speed presets">
+                    <button type="button" data-speed="0.7">Ultra Slowed</button>
+                    <button type="button" data-speed="0.8">Super Slowed</button>
+                    <button type="button" data-speed="0.9">Slowed</button>
+                    <button type="button" data-speed="1" class="is-active">Normal</button>
+                    <button type="button" data-speed="1.1">Sped Up</button>
+                    <button type="button" data-speed="1.2">Super Sped Up</button>
+                    <button type="button" data-speed="1.3">Ultra Sped Up</button>
+                  </div>
+                </div>
+
+                <div class="pitch-grid">
+                  <label>
+                    <span>Target key</span>
+                    <div class="select-wrap">
+                      <select id="targetKeySelect">
+                        <option value="source">No added transposition</option>
+                        <option value="0">C</option><option value="1">C♯</option><option value="2">D</option><option value="3">D♯</option>
+                        <option value="4">E</option><option value="5">F</option><option value="6">F♯</option><option value="7">G</option>
+                        <option value="8">G♯</option><option value="9">A</option><option value="10">A♯</option><option value="11">B</option>
+                        <option value="custom">Custom semitones</option>
+                      </select>
+                    </div>
+                  </label>
+                  <div class="output-key-card"><span>Preview output key</span><strong id="outputKey">—</strong><small id="outputKeyDetail">Upload a track to detect its key</small></div>
+                </div>
+
+                <div class="control-block compact-control">
+                  <div class="control-label"><label for="pitchRange">Fine pitch shift</label><output id="pitchValue">0 st</output></div>
+                  <input class="accent-range" id="pitchRange" type="range" min="-12" max="12" value="0" step="0.1" />
+                  <div class="range-ends"><span>−12 st</span><span>Changes key, not duration</span><span>+12 st</span></div>
+                </div>
+
+                <div class="control-block compact-control">
+                  <div class="control-label"><label for="volumeRange">Track volume</label><output id="volumeValue">+0.0 dB</output></div>
+                  <input class="accent-range" id="volumeRange" type="range" min="-12" max="12" value="0" step="0.5" />
+                  <div class="range-ends"><span>−12 dB (Softer)</span><span>0.0 dB (Original)</span><span>+12 dB (Boost)</span></div>
+                </div>
+              </section>
+
+              <section class="eq-card" aria-labelledby="eqTitle">
+                <div class="panel-heading eq-heading">
+                  <div><span>10-band equalizer</span><h3 id="eqTitle">Shape the frequency balance</h3></div>
+                  <div class="eq-presets" aria-label="EQ presets">
+                    <button type="button" data-eq-preset="flat" class="is-active">Flat</button>
+                    <button type="button" data-eq-preset="bass">Bass boost</button>
+                    <button type="button" data-eq-preset="club">Club punch</button>
+                    <button type="button" data-eq-preset="vocals">Vocal clarity</button>
+                    <button type="button" data-eq-preset="warm">Warm</button>
+                    <button type="button" data-eq-preset="bright">Bright</button>
+                  </div>
+                </div>
+                <div class="reference-eq" id="referenceEq">
+                  <div class="reference-copy">
+                    <span class="reference-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M4 12h2l2-7 4 14 3-10 2 6h3M5 21h14"/></svg>
+                    </span>
+                    <div><strong>Match a reference track</strong><p>Upload a second song to copy its tonal balance and optionally match its volume.</p></div>
+                  </div>
+                  <input id="referenceInput" type="file" accept="audio/*,.wav,.mp3,.ogg,.oga,.flac,.m4a,.aac,.aiff,.aif,.opus" hidden />
+                  <div class="reference-drop" id="referenceDrop" role="button" tabindex="0" aria-label="Upload an EQ reference track">
+                    <span id="referencePrompt">Drop reference audio here</span>
+                    <small id="referenceStatus">or click to browse</small>
+                  </div>
+                  <div class="reference-controls is-hidden" id="referenceControls">
+                    <div class="reference-file"><span><i></i><b id="referenceName">Reference audio</b></span><button type="button" id="referenceRemove">Remove</button></div>
+                    <label class="reference-strength" for="matchStrength">
+                      <span>Match EQ curve <output id="matchStrengthValue">85%</output></span>
+                      <input class="accent-range" id="matchStrength" type="range" min="0" max="100" value="85" step="1" />
+                    </label>
+                    <div class="reference-volume-row">
+                      <div class="volume-text">
+                        <span class="volume-title">Match volume</span>
+                        <small id="matchVolumeDetail">Match track loudness to reference</small>
+                      </div>
+                      <div class="volume-toggle-group">
+                        <span class="volume-badge" id="matchVolumeBadge">+0.0 dB</span>
+                        <label class="toggle-switch" for="matchVolumeToggle">
+                          <input type="checkbox" id="matchVolumeToggle" />
+                          <span class="toggle-slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="eq-scale" aria-hidden="true"><span>+12</span><span>0 dB</span><span>−12</span></div>
+                <div class="eq-knobs" id="eqKnobs"></div>
+                <p class="eq-help">Drag a knob up or down · double-click to reset a band</p>
+              </section>
+            </div>
+
+            <div class="progress-wrap is-hidden" id="progressWrap" aria-live="polite">
+              <div class="progress-label"><span id="progressText">Preparing engine…</span><strong id="progressPercent">0%</strong></div>
+              <div class="progress-track"><span id="progressBar"></span></div>
+            </div>
+
+            <div class="tool-message is-hidden" id="toolMessage" role="alert"></div>
+
+            <div class="tool-footer">
+              <p><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.9 8.6 7 10 4.1-1.4 7-5.4 7-10V6l-7-3Zm-3 9 2 2 4-4"/></svg>Your file never leaves this browser.</p>
+              <button class="convert-button" id="convertButton" type="button" disabled>
+                <span class="convert-label">Render edited audio</span>
+                <span class="download-label">Download file</span>
+                <svg viewBox="0 0 24 24"><path d="M12 5v12m0 0 5-5m-5 5-5-5M5 20h14"/></svg>
+              </button>
+            </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section class="process-section" id="how-it-works" aria-labelledby="process-title">
+          <div class="process-intro">
+            <p class="eyebrow"><span></span> A cleaner workflow</p>
+            <h2 id="process-title">From source to ready<br>in three moves.</h2>
+          </div>
+          <ol class="steps">
+            <li><b>01</b><div><strong>Drop it in</strong><p>Choose an audio file from your device. Nothing is uploaded.</p></div></li>
+            <li><b>02</b><div><strong>Set the output</strong><p>Pick the format, sample rate, bit depth, channels, and filename.</p></div></li>
+            <li><b>03</b><div><strong>Take it with you</strong><p>Convert locally, preview the result, and download immediately.</p></div></li>
+          </ol>
+        </section>
+      </main>
+
+      <footer>
+        <a class="brand" href="#top">
+          <span class="brand-sigma" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 4H5l7 8-7 8h14"/>
+            </svg>
+          </span>
+          <span>Sigma Audio</span>
+        </a>
+        <p>Engineered for Phonk, Brazilian Funk, electronic, and high-fidelity artists.</p>
+        <a href="#converter">Back to converter</a>
+      </footer>
+    </div>
+    <script type="module" src="/src/editor.js"></script>
+  </body>
+</html>
